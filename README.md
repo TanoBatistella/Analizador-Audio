@@ -1,7 +1,7 @@
 # Analizador de audio
 
 Página web 100 % estática (React + TypeScript + Vite). **No hay backend**: todo se analiza en el navegador
-del usuario, el audio nunca se sube a ningún servidor. Por eso se publica gratis y no tiene costos de servidor.
+del usuario, el audio nunca se sube a ningún servidor.
 
 Mide LUFS (EBU R128), true peak, RMS, clipping, espectro, espectrograma, vectorscopio, tonalidad (key, Camelot,
 escala, acordes) y BPM, y compara contra una pista de referencia (con escucha A/B a igual loudness).
