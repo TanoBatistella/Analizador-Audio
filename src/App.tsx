@@ -10,9 +10,11 @@ const gridOf = (t: Tempo | null) => (t && t.bpm > 0 ? { first: t.firstBeat, peri
 
 type Track = { name: string; a: Analysis };
 type Kind = "mix" | "ref";
+
 const f1 = (x: number, u = "") => (Number.isFinite(x) ? x.toFixed(1) + u : "−∞");
 const sgn = (x: number, u = "") => (Number.isFinite(x) ? (x > 0 ? "+" : "") + x.toFixed(1) + u : "—");
 const time = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
 const TARGETS = [["Spotify", -14], ["YouTube", -14], ["Apple Music", -16], ["Club / master fuerte", -9]] as const;
 
 function Stat({ label, value, hint, warn }: { label: string; value: string; hint?: string; warn?: boolean }) {
@@ -22,6 +24,7 @@ function Stat({ label, value, hint, warn }: { label: string; value: string; hint
     </div>
   );
 }
+
 const Group = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <><h3>{title}</h3><div className="grid">{children}</div></>
 );
@@ -149,8 +152,8 @@ export default function App() {
   const [refUrl, setRefUrl] = useState("");
   const [click, setClick] = useState(false);
   const audio = useRef<HTMLAudioElement>(null);
-  useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
 
+  useEffect(() => () => { if (url) URL.revokeObjectURL(url); }, [url]);
   useEffect(() => () => { if (refUrl) URL.revokeObjectURL(refUrl); }, [refUrl]);
   useEffect(() => { try { localStorage.setItem("aa.beats.v3", JSON.stringify(beats)); } catch { /* sin almacenamiento */ } }, [beats]);
 
@@ -206,54 +209,61 @@ export default function App() {
     }, 30);
     return () => { clearInterval(id); ctx.close(); };
   }, [click, mTe?.bpm, mTe?.firstBeat, mTe?.barIndex]);
+
   const off = norm && a && r && Number.isFinite(a.lufsI - r.lufsI) ? a.lufsI - r.lufsI : 0;
   const rateHint = a && (a.nativeRate == null ? "frecuencia original desconocida" : a.nativeRate !== a.sampleRate ? `original ${a.nativeRate / 1000} kHz, remuestreado` : "sin remuestreo");
 
   return (
     <main>
       <header>
-      <h1>Analizador de Audio Online Gratis</h1>
-      <p>
-        Analizá tus canciones y evaluá tus mezclas con herramientas de audio
-        directamente desde tu navegador. Medí loudness, picos, RMS, clipping,
-        espectro, tonalidad y BPM sin subir tus archivos a ningún servidor.
-      </p>
+        <h1>Analizador de Audio Online Gratis</h1>
+        <p>
+          Analizá tus canciones y evaluá tus mezclas con herramientas de audio
+          directamente desde tu navegador. Medí loudness, picos, RMS, clipping,
+          espectro, tonalidad y BPM sin subir tus archivos a ningún servidor.
+        </p>
       </header>
 
-      <section className="seo-info">
-  <h2>¿Qué es un analizador de audio online?</h2>
-  <p>
-    Es una herramienta para estudiar las características técnicas de una
-    canción o mezcla. Este analizador de audio gratuito permite revisar
-    niveles, sonoridad, frecuencias y otros parámetros útiles para productores
-    musicales antes de exportar un tema.
-  </p>
+      <section className="seo-info accordion">
+        <details>
+          <summary>¿Qué es un analizador de audio online?</summary>
+          <p>
+            Es una herramienta para estudiar las características técnicas de una
+            canción o mezcla. Este analizador de audio gratuito permite revisar
+            niveles, sonoridad, frecuencias y otros parámetros útiles para productores
+            musicales antes de exportar un tema.
+          </p>
+        </details>
 
-  <h2>¿Qué podés analizar?</h2>
-  <p>
-    Medí LUFS integrados, rango de sonoridad, true peak, RMS y clipping.
-    Visualizá la forma de onda, el espectro de frecuencias, el espectrograma
-    y el vectorscopio estéreo para conocer mejor el comportamiento de tu audio.
-  </p>
+        <details>
+          <summary>¿Qué podés analizar?</summary>
+          <p>
+            Medí LUFS integrados, rango de sonoridad, true peak, RMS y clipping.
+            Visualizá la forma de onda, el espectro de frecuencias, el espectrograma
+            y el vectorscopio estéreo para conocer mejor el comportamiento de tu audio.
+          </p>
+        </details>
 
-  <h2>Detectá tonalidad y BPM</h2>
-  <p>
-    Obtené estimaciones automáticas de tonalidad, escala y tempo de tus beats.
-    También podés comparar tu mezcla con una pista de referencia para evaluar
-    diferencias de loudness, niveles y balance de frecuencias.
-  </p>
+        <details>
+          <summary>Detectá tonalidad y BPM</summary>
+          <p>
+            Obtené estimaciones automáticas de tonalidad, escala y tempo de tus beats.
+            También podés comparar tu mezcla con una pista de referencia para evaluar
+            diferencias de loudness, niveles y balance de frecuencias.
+          </p>
+          <p>
+            El análisis se realiza en tu navegador y tus archivos de audio no se
+            suben a un servidor.
+          </p>
+        </details>
+      </section>
 
-  <p>
-    El análisis se realiza en tu navegador y tus archivos de audio no se
-    suben a un servidor.
-  </p>
-</section>
-      
       <div className="trio">
         <DropZone title="Tu mezcla" name={mix?.name} busy={busy.mix} onFiles={(f) => load("mix", f[0])} hint="Análisis completo: loudness, picos, espectro" />
         <DropZone title="Key & BPM" name={beats.length ? `${beats.length} beat${beats.length > 1 ? "s" : ""} analizados` : undefined} busy={busy.beat} multiple onFiles={loadBeats} hint="Soltá uno o varios beats: tonalidad, escala y BPM" />
         <DropZone title="Referencia (opcional)" name={ref?.name} busy={busy.ref} onFiles={(f) => load("ref", f[0])} hint="Para comparar espectro y niveles" />
       </div>
+
       {err && <p className="err" role="alert">{err}</p>}
       {beatSrc && <KeyBpmPanel b={beatSrc} />}
       {beats.length > 0 && <BeatsTable sel={beatSrc} beats={beats} onSel={setSelId} onRemove={(id) => setBeats((bs) => bs.filter((b) => b.id !== id))} onClear={() => setBeats([])} />}
@@ -373,7 +383,6 @@ export default function App() {
           </section>
         </>
       )}
-      <footer>Key y BPM son estimaciones automáticas. Mediciones hechas sobre el audio decodificado por el navegador, a la frecuencia original del archivo cuando se puede leer. Para certificar un master, contrastá con un medidor de referencia como Youlean.</footer>
     </main>
   );
 }
