@@ -19,21 +19,3 @@ Opción B, para modificarlo:
 4. `npm run dev` y abrí http://localhost:5173
 5. `npm run build` genera `dist/index.html`, un único archivo listo para publicar.
 6. `npm test` verifica los cálculos con señales de valor conocido.
-
-## Cómo publicarlo gratis
-
-Lo que se publica es la carpeta `dist` (o su único `index.html`).
-
-- Netlify Drop (lo más fácil, sin cuenta de Git): ejecutá `npm run build`, entrá a https://app.netlify.com/drop
-  y arrastrá la carpeta `dist`. Te da una URL pública al instante.
-- GitHub Pages: subí el proyecto a un repositorio de GitHub (rama `main`) y en Settings > Pages elegí
-  "GitHub Actions". El archivo `.github/workflows/deploy.yml` publica solo en cada cambio.
-- Cloudflare Pages o Vercel: conectá el repositorio, comando de build `npm run build`, carpeta de salida `dist`.
-
-## Notas de precisión
-
-- Se lee la frecuencia de muestreo original (WAV, FLAC, OGG, MP3) para que el navegador no remuestree.
-- Multicanal (hasta 6): pesos BS.1770 (surround +1,5 dB, LFE excluido).
-- El BPM se decide por ajuste de grilla de compás de 4 tiempos; asume 4/4.
-- Si dos tonalidades son relativas (mismas notas, por ejemplo E♭ menor y F♯ mayor) se muestran ambas.
-- Para certificar un master, contrastá con un medidor de referencia (por ejemplo Youlean).
