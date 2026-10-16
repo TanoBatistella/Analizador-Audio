@@ -212,10 +212,43 @@ export default function App() {
   return (
     <main>
       <header>
-        <h1>Analizador de audio</h1>
-        <p>Subí una canción y medí niveles, loudness y espectro. Todo se procesa en tu navegador: el archivo no se sube a ningún servidor.</p>
+      <h1>Analizador de Audio Online Gratis</h1>
+      <p>
+        Analizá tus canciones y evaluá tus mezclas con herramientas de audio
+        directamente desde tu navegador. Medí loudness, picos, RMS, clipping,
+        espectro, tonalidad y BPM sin subir tus archivos a ningún servidor.
+      </p>
       </header>
 
+      <section className="seo-info">
+  <h2>¿Qué es un analizador de audio online?</h2>
+  <p>
+    Es una herramienta para estudiar las características técnicas de una
+    canción o mezcla. Este analizador de audio gratuito permite revisar
+    niveles, sonoridad, frecuencias y otros parámetros útiles para productores
+    musicales antes de exportar un tema.
+  </p>
+
+  <h2>¿Qué podés analizar?</h2>
+  <p>
+    Medí LUFS integrados, rango de sonoridad, true peak, RMS y clipping.
+    Visualizá la forma de onda, el espectro de frecuencias, el espectrograma
+    y el vectorscopio estéreo para conocer mejor el comportamiento de tu audio.
+  </p>
+
+  <h2>Detectá tonalidad y BPM</h2>
+  <p>
+    Obtené estimaciones automáticas de tonalidad, escala y tempo de tus beats.
+    También podés comparar tu mezcla con una pista de referencia para evaluar
+    diferencias de loudness, niveles y balance de frecuencias.
+  </p>
+
+  <p>
+    El análisis se realiza en tu navegador y tus archivos de audio no se
+    suben a un servidor.
+  </p>
+</section>
+      
       <div className="trio">
         <DropZone title="Tu mezcla" name={mix?.name} busy={busy.mix} onFiles={(f) => load("mix", f[0])} hint="Análisis completo: loudness, picos, espectro" />
         <DropZone title="Key & BPM" name={beats.length ? `${beats.length} beat${beats.length > 1 ? "s" : ""} analizados` : undefined} busy={busy.beat} multiple onFiles={loadBeats} hint="Soltá uno o varios beats: tonalidad, escala y BPM" />
